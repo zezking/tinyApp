@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const PORT = 8080; // default port 8080
 const bodyParser = require("body-parser");
-const { request } = require("express");
+const { request, response } = require("express");
 const generateRandomString = require("./generateRandomString");
 
 const urlDatabase = {
@@ -36,8 +36,16 @@ app.get("/u/:shortURL", (req, res) => {
 
 app.post("/urls", (req, res) => {
   const shortURL = generateRandomString();
+
   urlDatabase[shortURL] = req.body.longURL;
+
   res.redirect(`/urls/` + shortURL);
+});
+
+app.post("/urls/:shortURL/delete", (req, res) => {
+  console.log(req.params.shortURL);
+  delete urlDatabase[req.params.shortURL];
+  res.redirect("/urls");
 });
 
 app.listen(PORT, () => {
