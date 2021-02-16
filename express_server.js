@@ -27,6 +27,7 @@ app.get("/urls/:shortURL", (req, res) => {
     shortURL: req.params.shortURL,
     longURL: urlDatabase[req.params.shortURL],
   };
+
   res.render("urls_show", templateVars);
 });
 
@@ -41,12 +42,24 @@ app.post("/urls", (req, res) => {
 
   urlDatabase[shortURL] = req.body.longURL;
 
+  console.log(req.body);
   res.redirect(`/urls/` + shortURL);
 });
 //add delete buttons
 app.post("/urls/:shortURL/delete", (req, res) => {
-  console.log(req.params.shortURL);
   delete urlDatabase[req.params.shortURL];
+  res.redirect("/urls");
+});
+
+//add url edit in urls_index.ejs
+app.post("/urls/:shortURL/edit", (req, res) => {
+  res.redirect("/urls/" + req.params.shortURL);
+});
+
+//add long url edit input text box and edit button to submit the link edited
+app.post("/urls/:shortURL/", (req, res) => {
+  console.log(req.params);
+  urlDatabase[req.params.shortURL] = req.body.longURL;
   res.redirect("/urls");
 });
 
