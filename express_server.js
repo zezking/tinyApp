@@ -12,12 +12,12 @@ const urlDatabase = {
 app.set("view engine", "ejs");
 
 app.use(bodyParser.urlencoded({ extended: true }));
-
+//render the index page with list of urls and short ulrs
 app.get("/urls", (req, res) => {
   const templateVars = { urls: urlDatabase };
   res.render("urls_index", templateVars);
 });
-//get the new links to convert to short url
+//render the get new link page with the input box and submit button
 app.get("/urls/new", (req, res) => {
   res.render("urls_new");
 });
@@ -29,11 +29,13 @@ app.get("/urls/:shortURL", (req, res) => {
   };
   res.render("urls_show", templateVars);
 });
+
+//use /u/shortURL to redirect to the actual website
 app.get("/u/:shortURL", (req, res) => {
   const longURL = urlDatabase[req.params.shortURL];
   res.redirect(longURL);
 });
-
+//input a regular url and generate a short url and push in the urlDatabase object
 app.post("/urls", (req, res) => {
   const shortURL = generateRandomString();
 
@@ -41,7 +43,7 @@ app.post("/urls", (req, res) => {
 
   res.redirect(`/urls/` + shortURL);
 });
-
+//add delete buttons
 app.post("/urls/:shortURL/delete", (req, res) => {
   console.log(req.params.shortURL);
   delete urlDatabase[req.params.shortURL];
