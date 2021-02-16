@@ -4,6 +4,7 @@ const PORT = 8080; // default port 8080
 const bodyParser = require("body-parser");
 const { request, response } = require("express");
 const generateRandomString = require("./generateRandomString");
+const cookieParser = require("cookie-parser");
 
 const urlDatabase = {
   b2xVn2: "http://www.lighthouselabs.ca",
@@ -21,6 +22,7 @@ app.get("/urls", (req, res) => {
 app.get("/urls/new", (req, res) => {
   res.render("urls_new");
 });
+
 //showing short url and long url
 app.get("/urls/:shortURL", (req, res) => {
   const templateVars = {
@@ -58,8 +60,11 @@ app.post("/urls/:shortURL/edit", (req, res) => {
 
 //add long url edit input text box and edit button to submit the link edited
 app.post("/urls/:shortURL/", (req, res) => {
-  console.log(req.params);
   urlDatabase[req.params.shortURL] = req.body.longURL;
+  res.redirect("/urls");
+});
+app.post("/login", (req, res) => {
+  req.body.username;
   res.redirect("/urls");
 });
 
