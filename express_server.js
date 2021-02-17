@@ -11,6 +11,7 @@ const urlDatabase = {
   "9sm5xK": "http://www.google.com",
 };
 
+const user = {};
 app.set("view engine", "ejs");
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -25,6 +26,10 @@ app.get("/urls/new", (req, res) => {
   const templateVars = { username: req.cookies["username"] };
   console.log(req.cookies["username"]);
   res.render("urls_new", templateVars);
+});
+app.get("/register", (req, res) => {
+  const templateVars = { urls: urlDatabase, username: req.cookies["username"] };
+  res.render("urls_register", templateVars);
 });
 
 //showing short url and long url

@@ -22,31 +22,36 @@
         margin: 100px;
       "
     >
-      <div class="card text-center">
-        <div class="card-header"></div>
-        <div class="card-body">
-          <h5 class="card-title">TinyURL for: <%= longURL %></h5>
-          <p class="card-text">
-            Short URL: <a href="/u/<%= shortURL %>"><%= shortURL %></a>
-          </p>
-          <form class="form-inline" action="/urls/<%= shortURL %>" method="POST">
-          <input
-            class="form-control"
-            type="text"
-            name="longURL"
-            value="<%= longURL %>"
-            style="width: 300px; margin: 1em"
-          />
-          <!-- <a type="submit" href="#" class="btn btn-primary">edit</a> -->
-          <button type="edit" class="btn btn-outline-primary">
-            edit
-          </button>
-          </form>
+      <div class="main-content">
+        <main style="margin: 10em">
+        <div class=" text-center">
+          <div class="header">
+          <div class="-body">
+            <h5 class="-title">TinyURL for: <%= longURL %></h5>
+            <p class="-text">
+              Short URL: <a href="/u/<%= shortURL %>"><%= shortURL %></a>
+            </p>
+            <form
+              class="form-inline"
+              action="/urls/<%= shortURL %>"
+              method="POST"
+            >
+              <input
+                class="form-control"
+                type="text"
+                name="longURL"
+                value="<%= longURL %>"
+                style="width: 300px; margin: 1em"
+              />
+              <!-- <a type="submit" href="#" class="btn btn-primary">edit</a> -->
+              <button type="edit" class="btn btn-outline-primary">edit</button>
+            </form>
+          </div>
         </div>
       </div>
-        </div>
-      </div>
+    </main>
     </div>
+
     <!-- Bootstrap JS -->
     <script
       src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
