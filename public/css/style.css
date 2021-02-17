@@ -1,3 +1,27 @@
+body {
+  background-color: black;
+  font-weight: 900;
+  background-image: url("/img/background.jpeg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+}
+main {
+  width: 50em;
+  padding: 20px;
+  background-color: white;
+  border-radius: 12px;
+  font-family: "Open Sans", sans-serif;
+  font-size: 14px;
+  -webkit-box-shadow: 9px 13px 33px 0px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 9px 13px 33px 0px rgba(0, 0, 0, 0.75);
+  box-shadow: 9px 13px 33px 0px rgba(0, 0, 0, 0.75);
+}
+.main-content {
+  display: flex;
+  justify-content: space-around;
+}
+
 .navbar-brand {
   font-family: "Playfair Display", serif;
 }
@@ -20,28 +44,7 @@ nav {
 .navbar-dark .navbar-nav .nav-link {
   color: #f5f5f5;
 }
-body {
-  background-color: black;
-  font-weight: 900;
-  background-image: url("/img/background.jpeg");
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-attachment: fixed;
-}
 
-.main-content {
-  display: flex;
-  justify-content: space-around;
-}
-
-main {
-  width: 50em;
-  padding: 20px;
-  background-color: white;
-  border-radius: 12px;
-  font-family: "Open Sans", sans-serif;
-  font-size: 14px;
-  -webkit-box-shadow: 9px 13px 33px 0px rgba(0, 0, 0, 0.75);
-  -moz-box-shadow: 9px 13px 33px 0px rgba(0, 0, 0, 0.75);
-  box-shadow: 9px 13px 33px 0px rgba(0, 0, 0, 0.75);
+button {
+  margin-right: 10px;
 }
