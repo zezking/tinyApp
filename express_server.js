@@ -27,6 +27,7 @@ app.get("/urls/new", (req, res) => {
   console.log(req.cookies["username"]);
   res.render("urls_new", templateVars);
 });
+//render the registration page
 app.get("/register", (req, res) => {
   const templateVars = { urls: urlDatabase, username: req.cookies["username"] };
   res.render("urls_register", templateVars);
@@ -48,12 +49,14 @@ app.get("/u/:shortURL", (req, res) => {
   const longURL = urlDatabase[req.params.shortURL];
   res.redirect(longURL);
 });
+
 //input a regular url and generate a short url and push in the urlDatabase object
 app.post("/urls", (req, res) => {
   const shortURL = generateRandomString();
   urlDatabase[shortURL] = req.body.longURL;
   res.redirect(`/urls/` + shortURL);
 });
+
 //add delete buttons
 app.post("/urls/:shortURL/delete", (req, res) => {
   delete urlDatabase[req.params.shortURL];
@@ -70,17 +73,20 @@ app.post("/urls/:shortURL/", (req, res) => {
   urlDatabase[req.params.shortURL] = req.body.longURL;
   res.redirect("/urls");
 });
-
+//enter user name and login
 app.post("/login", (req, res) => {
-  console.log(req.body);
   res.cookie("username", req.body.username);
-  console.log(req.cookies.username);
   res.redirect("/urls");
 });
-
+//take user to urls once click logout
 app.post("/logout", (req, res) => {
   res.clearCookie("username");
 
+  res.redirect("/urls");
+});
+app.post("/register", (req, res) => {
+  console.log(req.body);
+  console.log(req.params);
   res.redirect("/urls");
 });
 
