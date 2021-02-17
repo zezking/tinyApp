@@ -14,14 +14,20 @@
       integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
       crossorigin="anonymous"
     />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@900&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
     <title>TinyApp</title>
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
   </head>
   <body>
+    
     <%- include('partials/_header') %>
     <div class="main-content">
-      <main style="margin: 1em">
+      <main style="margin: 15em">
         <h3>My URLs</h3>
+     
         <table class="table">
           <thead>
             <tr>
@@ -38,14 +44,14 @@
               <td><%= urls[url] %></td>
               <td>
                 <form method="POST" action="/urls/<%= url %>/edit"">
-                  <button type="edit" class="btn btn-outline-primary">
+                  <button type="edit" class="btn btn-outline-primary btn-sm">
                     edit
                   </button>
                 </form>
               </td>
               <td>
                 <form method="POST" action="/urls/<%= url %>/delete"">
-                  <button type="delete" class="btn btn-outline-danger">
+                  <button type="delete" class="btn btn-outline-danger btn-sm">
                     delete
                   </button>
                 </form>
@@ -57,6 +63,7 @@
         </table>
       </main>
     </div>
+
     <!-- Bootstrap JS -->
     <script
       src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
