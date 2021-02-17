@@ -10,17 +10,20 @@ const urlDatabase = {
   b2xVn2: "http://www.lighthouselabs.ca",
   "9sm5xK": "http://www.google.com",
 };
-app.set("view engine", "ejs");
 
+app.set("view engine", "ejs");
+app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 //render the index page with list of urls and short ulrs
+
 app.get("/urls", (req, res) => {
   const templateVars = { urls: urlDatabase };
   res.render("urls_index", templateVars);
 });
 //render the get new link page with the input box and submit button
 app.get("/urls/new", (req, res) => {
-  res.render("urls_new");
+  const templateVars = { username: req.cookies["username"] };
+  res.render("urls_new", templateVars);
 });
 
 //showing short url and long url
@@ -28,6 +31,7 @@ app.get("/urls/:shortURL", (req, res) => {
   const templateVars = {
     shortURL: req.params.shortURL,
     longURL: urlDatabase[req.params.shortURL],
+    username: req.cookies["username"],
   };
 
   res.render("urls_show", templateVars);
@@ -41,10 +45,7 @@ app.get("/u/:shortURL", (req, res) => {
 //input a regular url and generate a short url and push in the urlDatabase object
 app.post("/urls", (req, res) => {
   const shortURL = generateRandomString();
-
   urlDatabase[shortURL] = req.body.longURL;
-
-  console.log(req.body);
   res.redirect(`/urls/` + shortURL);
 });
 //add delete buttons
@@ -64,7 +65,7 @@ app.post("/urls/:shortURL/", (req, res) => {
   res.redirect("/urls");
 });
 app.post("/login", (req, res) => {
-  req.body.username;
+  res.cookie("username", req.body.username);
   res.redirect("/urls");
 });
 
