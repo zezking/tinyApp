@@ -47,7 +47,12 @@ app.get("/register", (req, res) => {
   res.render("urls_register", templateVars);
 });
 app.get("/login", (req, res) => {
-  res.render("urls_login");
+  const templateVars = {
+    shortURL: req.params.shortURL,
+    longURL: urlDatabase[req.params.shortURL],
+    user: users[req.cookies.userID],
+  };
+  res.render("urls_login", templateVars);
 });
 
 //showing short url and long url
