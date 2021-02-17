@@ -17,12 +17,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //render the index page with list of urls and short ulrs
 
 app.get("/urls", (req, res) => {
-  const templateVars = { urls: urlDatabase };
+  const templateVars = { urls: urlDatabase, username: req.cookies["username"] };
   res.render("urls_index", templateVars);
 });
 //render the get new link page with the input box and submit button
 app.get("/urls/new", (req, res) => {
   const templateVars = { username: req.cookies["username"] };
+  console.log(req.cookies["username"]);
   res.render("urls_new", templateVars);
 });
 
@@ -64,8 +65,17 @@ app.post("/urls/:shortURL/", (req, res) => {
   urlDatabase[req.params.shortURL] = req.body.longURL;
   res.redirect("/urls");
 });
+
 app.post("/login", (req, res) => {
+  console.log(req.body);
   res.cookie("username", req.body.username);
+  console.log(req.cookies.username);
+  res.redirect("/urls");
+});
+
+app.post("/logout", (req, res) => {
+  res.clearCookie("username");
+
   res.redirect("/urls");
 });
 
