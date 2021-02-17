@@ -17,15 +17,12 @@ main {
   -moz-box-shadow: 9px 13px 33px 0px rgba(0, 0, 0, 0.75);
   box-shadow: 9px 13px 33px 0px rgba(0, 0, 0, 0.75);
 }
+.login-card {
+  width: 300px;
+}
 .main-content {
   display: flex;
   justify-content: space-around;
-}
-
-.main-content-login {
-  display: flex;
-  justify-content: space-around;
-  width: 300px;
 }
 
 .navbar-brand {

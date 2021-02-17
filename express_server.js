@@ -97,6 +97,10 @@ app.post("/urls/:shortURL/", (req, res) => {
 });
 //enter user name and login
 app.post("/login", (req, res) => {
+  console.log(req.body.email);
+
+  console.log(req.body.password);
+
   res.redirect("/login");
 });
 //take user to urls once click logout
