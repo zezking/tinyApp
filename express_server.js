@@ -6,7 +6,8 @@ const { request, response } = require("express");
 const generateRandomString = require("./generateRandomString");
 const cookieParser = require("cookie-parser");
 const { checkEmail, checkCredential, urlsForUser } = require("./helperFunc");
-
+const bcrypt = require("bcrypt");
+const saltRounds = 10;
 let urlDatabase = {
   b6UTxQ: { longURL: "https://www.tsn.ca", userID: "mg4vnm" },
   i3BoGr: { longURL: "https://www.google.ca", userID: "mg4vnm" },
@@ -18,14 +19,15 @@ let users = {
   mg4vnm: {
     id: "mg4vnm",
     email: "zhaoenze001@gmail.com",
-    password: "sdfsdfsdfsd",
+    password: "$2b$10$k/ZVjYEjiRXutvVbORJLUuhN0VdzgGOHv9FikpCePzbjNWOyDInU2",
   },
   "7EXK5b": {
     id: "7EXK5b",
     email: "wuhaoppp@163.com",
-    password: "123123",
+    password: "$2b$10$IKMlxybewG9pURaAWQtBI.4W61PPUv/V7Hjae7qANQ3hw35lt14S.",
   },
 };
+
 app.set("view engine", "ejs");
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -56,8 +58,6 @@ app.get("/urls", (req, res) => {
 
     res.render("urls_index", templateVars);
   }
-
-  // res.render("urls_index", templateVars);
 });
 //render the get new link page with the input box and submit button
 app.get("/urls/new", (req, res) => {
@@ -91,10 +91,6 @@ app.get("/urls/:shortURL", (req, res) => {
     longURL: urlDatabase[req.params.shortURL].longURL,
     user: users[req.cookies.userID],
   };
-
-  console.log(req.params);
-  console.log(urlDatabase[req.params.shortURL]);
-
   res.render("urls_show", templateVars);
 });
 
@@ -133,17 +129,27 @@ app.post("/urls/:shortURL/", (req, res) => {
 });
 
 //check if the login credential is correct, return error if not and redirect to url
-app.post("/loginCheck", (req, res) => {
-  if (checkCredential(users, req.body.email, req.body.password)) {
-    res.cookie(
-      "userID",
-      checkCredential(users, req.body.email, req.body.password)
-    );
 
-    res.redirect("/urls");
-  } else {
-    res.sendStatus(403);
+//sdfsdfsdfsd
+app.post("/login", (req, res) => {
+  let newUsers = checkCredential(users);
+
+  if (!newUsers[req.body.email]) {
+    res.status(401).send("No user with that username found");
   }
+
+  bcrypt.compare(
+    req.body.password,
+    newUsers[req.body.email].password,
+    (err, result) => {
+      if (result) {
+        res.cookie("userID", newUsers[req.body.email].id);
+        res.redirect("/urls");
+      } else {
+        res.status(401).send("Password incorrect");
+      }
+    }
+  );
 });
 
 //take user to urls once click logout
@@ -156,20 +162,21 @@ app.post("/logout", (req, res) => {
 app.post("/register", (req, res) => {
   const randomUserID = generateRandomString();
   if (req.body.email === "" || req.body.password === "") {
-    res.sendStatus(404);
+    res.status(404).send("<h1>Page Not Found</h1>");
   } else if (checkEmail(users, req.body.email)) {
-    res.sendStatus(400);
+    res.status(400).send("<h1>Account Exist</h1>");
   } else {
-    users[randomUserID] = {
-      id: randomUserID,
-      email: req.body.email,
-      password: req.body.password,
-    };
-    res.cookie("userID", randomUserID);
-    res.redirect("/urls");
+    bcrypt.hash(req.body.password, saltRounds).then((hash) => {
+      users[randomUserID] = {
+        id: randomUserID,
+        email: req.body.email,
+        password: hash,
+      };
+      res.cookie("userID", randomUserID);
+      res.redirect("/urls");
+    });
   }
 });
-
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
 });
