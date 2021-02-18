@@ -1,6 +1,6 @@
 # Instroduction
 
-This is a web application that will generate shorter URLs based on regular URlsfor Lighthouse Lab bootcamp.
+This is a web application that will generate shorter URLs based on regular URls for Lighthouse Lab bootcamp Week 3.
 
 ## Screenshots and Features
 

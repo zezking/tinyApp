@@ -131,10 +131,6 @@ app.post("/urls/:shortURL/", (req, res) => {
   urlDatabase[req.params.shortURL].longURL = req.body.longURL;
   res.redirect("/urls");
 });
-//enter user name and login page
-app.post("/login", (req, res) => {
-  res.redirect("/login");
-});
 
 //check if the login credential is correct, return error if not and redirect to url
 app.post("/loginCheck", (req, res) => {
@@ -155,9 +151,6 @@ app.post("/logout", (req, res) => {
   res.clearCookie("userID");
 
   res.redirect("/urls");
-});
-app.post("/register/registerPage", (req, res) => {
-  res.redirect("/register");
 });
 
 app.post("/register", (req, res) => {

@@ -19,7 +19,7 @@
       aria-expanded="false"
       aria-label="Toggle navigation"
     >
-      <span class="navbar-toggler-icon"></span>
+      <spatn class="navbar-toggler-icon"></spatn>
     </button>
 
     <% if(user){ %>
@@ -37,7 +37,7 @@
         >You are log in as <%= user.email %></a
       >
       <button class="btn btn-outline-light my-2 my-sm-0" type="submit">
-        logout
+        Logout
       </button>
     </form>
     <% } else{ %>
@@ -50,18 +50,14 @@
           <a class="nav-link" href="/urls/new"></a>
         </li>
       </ul>
-      <form method="POST" action="/login" class="form-inline my-2 my-lg-0">
+      <form method="GET" action="/login" class="form-inline my-2 my-lg-0">
         <button class="btn btn-outline-light my-2 my-sm-0" type="submit">
-          login
+          Login
         </button>
       </form>
-      <form
-        method="POST"
-        action="/register/registerPage"
-        class="form-inline my-2 my-lg-0"
-      >
+      <form method="GET" action="/register" class="form-inline my-2 my-lg-0">
         <button class="btn btn-outline-light my-2 my-sm-0" type="submit">
-          register
+          Register
         </button>
       </form>
       <% } %>
