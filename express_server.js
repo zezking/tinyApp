@@ -30,7 +30,7 @@ app.set("view engine", "ejs");
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
-//render the index page with list of urls and short ulrs
+
 app.get("/welcome", (req, res) => {
   const templateVars = {
     urls: urlDatabase,
@@ -42,6 +42,8 @@ app.get("/welcome", (req, res) => {
     res.redirect("/urls");
   }
 });
+
+//render the index page with list of urls and short ulrs
 
 app.get("/urls", (req, res) => {
   if (users[req.cookies.userID] === undefined) {
@@ -126,7 +128,7 @@ app.post("/urls/:shortURL/edit", (req, res) => {
 
 //add long url edit input text box and edit button to submit the link edited
 app.post("/urls/:shortURL/", (req, res) => {
-  urlDatabase[req.params.shortURL] = req.body.longURL;
+  urlDatabase[req.params.shortURL].longURL = req.body.longURL;
   res.redirect("/urls");
 });
 //enter user name and login page
