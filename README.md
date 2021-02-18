@@ -12,6 +12,10 @@ User login
 
 ![main interface](./screenshots/2.png)
 
+User Registration
+
+![main interface](./screenshots/6.png)
+
 Users have their own URLs
 
 ![main interface](./screenshots/3.png)
