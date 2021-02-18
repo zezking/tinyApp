@@ -24,7 +24,7 @@ let users = {
   "7EXK5b": {
     id: "7EXK5b",
     email: "wuhaoppp@163.com",
-    password: "$2b$10$IKMlxybewG9pURaAWQtBI.4W61PPUv/V7Hjae7qANQ3hw35lt14S.",
+    password: "$2b$10$RnLjlZn/ZPYT2UJ7fEG16O1kj1xOU9Hg.bsSbH0EizuXnhZ2mNI16",
   },
 };
 
@@ -172,6 +172,7 @@ app.post("/register", (req, res) => {
         email: req.body.email,
         password: hash,
       };
+      console.log(hash);
       res.cookie("userID", randomUserID);
       res.redirect("/urls");
     });
