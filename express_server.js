@@ -5,7 +5,8 @@ const bodyParser = require("body-parser");
 const { request, response } = require("express");
 const generateRandomString = require("./generateRandomString");
 const cookieParser = require("cookie-parser");
-const { checkEmail } = require("./helperFunc");
+const { checkEmail, checkCredential } = require("./helperFunc");
+console.log(checkCredential);
 const urlDatabase = {
   b2xVn2: "http://www.lighthouselabs.ca",
   "9sm5xK": "http://www.google.com",
@@ -48,8 +49,6 @@ app.get("/register", (req, res) => {
 });
 app.get("/login", (req, res) => {
   const templateVars = {
-    shortURL: req.params.shortURL,
-    longURL: urlDatabase[req.params.shortURL],
     user: users[req.cookies.userID],
   };
   res.render("urls_login", templateVars);
@@ -95,14 +94,25 @@ app.post("/urls/:shortURL/", (req, res) => {
   urlDatabase[req.params.shortURL] = req.body.longURL;
   res.redirect("/urls");
 });
-//enter user name and login
+//enter user name and login page
 app.post("/login", (req, res) => {
-  console.log(req.body.email);
-
-  console.log(req.body.password);
-
   res.redirect("/login");
 });
+
+//check if the login credential is correct, return error if not and redirect to url
+app.post("/loginCheck", (req, res) => {
+  if (checkCredential(users, req.body.email, req.body.password)) {
+    res.cookie(
+      "userID",
+      checkCredential(users, req.body.email, req.body.password)
+    );
+
+    res.redirect("/urls");
+  } else {
+    res.sendStatus(403);
+  }
+});
+
 //take user to urls once click logout
 app.post("/logout", (req, res) => {
   res.clearCookie("userID");

@@ -27,11 +27,14 @@ main {
 
 .navbar-brand {
   font-family: "Playfair Display", serif;
+  font-weight: bold;
 }
 h3 {
   font-family: "Open Sans", sans-serif;
-  font-size: 12px;
+  font-size: 18px;
   font-weight: bold;
+  padding-top: 10px;
+  text-align: center;
 }
 
 nav {
@@ -46,6 +49,23 @@ nav {
 
 .navbar-dark .navbar-nav .nav-link {
   color: #f5f5f5;
+}
+
+form {
+  justify-content: center;
+}
+body {
+  background-color: black;
+  font-weight: 900;
+  background-image: url("/img/background.jpeg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+.main-content {
+  display: flex;
+  justify-content: space-around;
 }
 
 button {
