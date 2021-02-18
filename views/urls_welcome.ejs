@@ -14,7 +14,6 @@
       integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" type="text/css" href="/css/style.css" />
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link
       href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@900&display=swap"
@@ -25,39 +24,20 @@
       href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap"
       rel="stylesheet"
     />
+    <title>TinyApp</title>
     <link rel="stylesheet" type="text/css" href="/css/style.css" />
   </head>
   <body>
     <%- include('partials/_header') %>
-    <div class="main-content">
-      <main class="w-25 p-3" style="margin: 15em">
-        <form method="POST" action="/loginCheck">
-          <div class="form-group">
-            <label for="exampleInputEmail1">Email address</label>
-            <input
-              type="email"
-              name="email"
-              class="form-control"
-              id="exampleInputEmail1"
-              aria-describedby="emailHelp"
-              placeholder="Enter email"
-            />
-          </div>
-          <div class="form-group">
-            <label for="exampleInputPassword1">Password</label>
-            <input
-              type="password"
-              name="password"
-              class="form-control"
-              id="exampleInputPassword1"
-              placeholder="Password"
-            />
-          </div>
-          <div class="text-center">
-            <button type="submit" class="btn btn-primary btn-sm">login</button>
-          </div>
-        </form>
-      </main>
+    <div class="container">
+      <div class="welcome-content">
+        <div class="welcome-title">
+          <h1><span>Welcome to </span>TinyApp</h1>
+        </div>
+        <div class="quote">
+          <P>An URL shortening app that sucks balls</P>
+        </div>
+      </div>
     </div>
     <!-- Bootstrap JS -->
     <script

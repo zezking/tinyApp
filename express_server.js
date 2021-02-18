@@ -5,18 +5,25 @@ const bodyParser = require("body-parser");
 const { request, response } = require("express");
 const generateRandomString = require("./generateRandomString");
 const cookieParser = require("cookie-parser");
-const { checkEmail, checkCredential } = require("./helperFunc");
-console.log(checkCredential);
-const urlDatabase = {
-  b2xVn2: "http://www.lighthouselabs.ca",
-  "9sm5xK": "http://www.google.com",
+const { checkEmail, checkCredential, urlsForUser } = require("./helperFunc");
+
+let urlDatabase = {
+  b6UTxQ: { longURL: "https://www.tsn.ca", userID: "mg4vnm" },
+  i3BoGr: { longURL: "https://www.google.ca", userID: "mg4vnm" },
+  Z3gm4q: { longURL: "https://www.facebook.ca", userID: "7EXK5b" },
+  NJku5A: { longURL: "https://www.hansori.ca", userID: "7EXK5b" },
 };
 
-const users = {
+let users = {
   mg4vnm: {
     id: "mg4vnm",
     email: "zhaoenze001@gmail.com",
     password: "sdfsdfsdfsd",
+  },
+  "7EXK5b": {
+    id: "7EXK5b",
+    email: "wuhaoppp@163.com",
+    password: "123123",
   },
 };
 app.set("view engine", "ejs");
@@ -24,19 +31,40 @@ app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 //render the index page with list of urls and short ulrs
-
-app.get("/urls", (req, res) => {
+app.get("/welcome", (req, res) => {
   const templateVars = {
     urls: urlDatabase,
     user: users[req.cookies.userID],
   };
-  res.render("urls_index", templateVars);
+  if (users[req.cookies.userID] === undefined) {
+    res.render("urls_welcome", templateVars);
+  } else {
+    res.redirect("/urls");
+  }
+});
+
+app.get("/urls", (req, res) => {
+  if (users[req.cookies.userID] === undefined) {
+    res.redirect("/welcome");
+  } else {
+    let templateVars = {
+      urls: urlsForUser(urlDatabase, req.cookies.userID),
+      user: users[req.cookies.userID],
+    };
+
+    res.render("urls_index", templateVars);
+  }
+
+  // res.render("urls_index", templateVars);
 });
 //render the get new link page with the input box and submit button
 app.get("/urls/new", (req, res) => {
   const templateVars = { user: users[req.cookies.userID] };
-
-  res.render("urls_new", templateVars);
+  if (users[req.cookies.userID] === undefined) {
+    res.redirect("/login");
+  } else {
+    res.render("urls_new", templateVars);
+  }
 });
 //render the registration page
 app.get("/register", (req, res) => {
@@ -58,23 +86,30 @@ app.get("/login", (req, res) => {
 app.get("/urls/:shortURL", (req, res) => {
   const templateVars = {
     shortURL: req.params.shortURL,
-    longURL: urlDatabase[req.params.shortURL],
+    longURL: urlDatabase[req.params.shortURL].longURL,
     user: users[req.cookies.userID],
   };
+
+  console.log(req.params);
+  console.log(urlDatabase[req.params.shortURL]);
 
   res.render("urls_show", templateVars);
 });
 
 //use /u/shortURL to redirect to the actual website
 app.get("/u/:shortURL", (req, res) => {
-  const longURL = urlDatabase[req.params.shortURL];
+  const longURL = urlDatabase[req.params.shortURL].longURL;
+  console.log(longURL);
   res.redirect(longURL);
 });
 
 //input a regular url and generate a short url and push in the urlDatabase object
 app.post("/urls", (req, res) => {
   const shortURL = generateRandomString();
-  urlDatabase[shortURL] = req.body.longURL;
+  urlDatabase[shortURL] = {
+    longURL: req.body.longURL,
+    userID: req.cookies.userID,
+  };
   res.redirect(`/urls/` + shortURL);
 });
 

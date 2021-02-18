@@ -8,48 +8,51 @@
       integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
       crossorigin="anonymous"
     />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
     <title>URL - TinyApp Example</title>
   </head>
 
   <body>
     <%- include('partials/_header') %>
-    <div
-      class="main-edit"
-      style="
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin: 100px;
-      "
-    >
-      <div class="main-content">
-        <main style="margin: 10em">
-        <div class=" text-center">
+
+    <div class="main-content">
+      <main style="margin: 10em">
+        <div class="text-center">
           <div class="header">
-          <div class="-body">
-            <h5 class="-title">TinyURL for: <%= longURL %></h5>
-            <p class="-text">
-              Short URL: <a href="/u/<%= shortURL %>"><%= shortURL %></a>
-            </p>
-            <form
-              class="form-inline"
-              action="/urls/<%= shortURL %>"
-              method="POST"
-            >
-              <input
-                class="form-control"
-                type="text"
-                name="longURL"
-                value="<%= longURL %>"
-                style="width: 300px; margin: 1em"
-              />
-              <!-- <a type="submit" href="#" class="btn btn-primary">edit</a> -->
-              <button type="edit" class="btn btn-outline-primary">edit</button>
-            </form>
+            <div class="-body">
+              <h5 class="-title">TinyURL for: <%= longURL %></h5>
+              <p class="-text">
+                Short URL: <a href="/u/<%= shortURL %>"><%= shortURL %></a>
+              </p>
+              <form
+                class="form-inline"
+                action="/urls/<%= shortURL %>"
+                method="POST"
+              >
+                <input
+                  class="form-control"
+                  type="text"
+                  name="longURL"
+                  value="<%= longURL %>"
+                  style="width: 300px; margin: 1em"
+                />
+                <!-- <a type="submit" href="#" class="btn btn-primary">edit</a> -->
+                <button type="edit" class="btn btn-outline-primary">
+                  edit
+                </button>
+              </form>
+            </div>
           </div>
         </div>
-      </div>
-    </main>
+      </main>
     </div>
 
     <!-- Bootstrap JS -->

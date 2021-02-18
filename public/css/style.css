@@ -24,10 +24,33 @@ main {
   display: flex;
   justify-content: space-around;
 }
-
+.welcome-content {
+  margin-left: 20em;
+}
 .navbar-brand {
   font-family: "Playfair Display", serif;
   font-weight: bold;
+}
+.container {
+  height: 500px;
+  width: 500px;
+  display: flex;
+  color: white;
+  margin: 10em;
+}
+span {
+  font-size: 25px;
+}
+.quote p {
+  font-weight: 700;
+  color: #313639;
+  margin-left: 15em;
+  margin-top: 2em;
+}
+h1 {
+  font-family: "Playfair Display", serif;
+  font-weight: bold;
+  font-size: 8.5em;
 }
 h3 {
   font-family: "Open Sans", sans-serif;

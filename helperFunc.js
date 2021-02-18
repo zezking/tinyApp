@@ -16,4 +16,14 @@ const checkCredential = (obj, email, password) => {
   return false;
 };
 
-module.exports = { checkEmail, checkCredential };
+const urlsForUser = (obj, userID) => {
+  let newObj = {};
+  for (i in obj) {
+    if (obj[i].userID === userID) {
+      newObj[i] = obj[i];
+    }
+  }
+  return newObj;
+};
+
+module.exports = { checkEmail, checkCredential, urlsForUser };
