@@ -61,6 +61,7 @@ app.get("/urls", (req, res) => {
       urls: urlsForUser(urlDatabase, req.session.userID),
       user: users[req.session.userID],
     };
+    console.log(urlsForUser(urlDatabase, req.session.userID));
 
     res.render("urls_index", templateVars);
   }
@@ -139,19 +140,19 @@ app.post("/urls/:shortURL/", (req, res) => {
 
 //sdfsdfsdfsd
 app.post("/login", (req, res) => {
-  let userByEmail = getUserByEmail(users, req.body.email);
-  console.log(userByEmail);
+  let userIDbyEmail = getUserByEmail(users, req.body.email);
+  console.log(userIDbyEmail);
   if (req.body.email === "" || req.body.password === "") {
     res.status(404).send("<h1>Please Enter Email or Password</h1>");
-  } else if (Object.keys(userByEmail).length === 0) {
+  } else if (userIDbyEmail === undefined) {
     res.status(401).send("<h1>No user with that username found</h1>");
   } else {
     bcrypt.compare(
       req.body.password,
-      userByEmail[req.body.email].password,
+      users[userIDbyEmail].password,
       (err, result) => {
         if (result) {
-          req.session.userID = userByEmail[req.body.email].id;
+          req.session.userID = userIDbyEmail;
           res.redirect("/urls");
         } else {
           res.status(401).send("<h1>No user with that username found</h1>");

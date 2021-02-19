@@ -35,3 +35,12 @@ describe("getUserByEmail", function () {
     assert.equal(user["user2@example.com"].id, expectedOutput);
   });
 });
+describe("getUserByEmail", function () {
+  it("should return undefined with invalid email", function () {
+    const user = getUserByEmail(testUsers, "user2@exam222ple.com");
+    const expectedOutput = undefined;
+    // Write your assert statement here
+
+    assert.equal(user, expectedOutput);
+  });
+});

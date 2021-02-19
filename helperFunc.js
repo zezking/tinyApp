@@ -9,17 +9,12 @@ const checkEmail = (obj, str) => {
 };
 
 const getUserByEmail = (obj, email) => {
-  let tempObj = {};
   for (let i in obj) {
-    if (!tempObj[obj[i].email] && obj[i].email === email) {
-      tempObj[obj[i].email] = {
-        id: i,
-        email: obj[i].email,
-        password: obj[i].password,
-      };
+    if (obj[i].email === email) {
+      return i;
     }
   }
-  return tempObj;
+  return undefined;
 };
 
 const urlsForUser = (obj, userID) => {
@@ -31,20 +26,5 @@ const urlsForUser = (obj, userID) => {
   }
   return newObj;
 };
-
-let users = {
-  mg4vnm: {
-    id: "mg4vnm",
-    email: "zhaoenze001@gmail.com",
-    password: "$2b$10$7k228Lj8NzxU.1Nme1qIweu97VvGgvewl6zN67V.DCHbroUWdmW8O",
-  },
-  "7EXK5b": {
-    id: "7EXK5b",
-    email: "wuhaoppp@163.com",
-    password: "$2b$10$b9syDlbeH4VTHfSVc7QGo.El/1J2VCpkawWaLh.p0xMSl5aNh4puW",
-  },
-};
-
-console.log(getUserByEmail(users, "zhaoen123123ze001@gmail.com"));
 
 module.exports = { checkEmail, getUserByEmail, urlsForUser };
