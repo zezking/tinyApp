@@ -18,8 +18,20 @@ const testUsers = {
 
 describe("getUserByEmail", function () {
   it("should return a user with valid email", function () {
-    const user = getUserByEmail("user@example.com", testUsers);
+    const user = getUserByEmail(testUsers, "user@example.com");
     const expectedOutput = "userRandomID";
     // Write your assert statement here
+
+    assert.equal(user["user@example.com"].id, expectedOutput);
+  });
+});
+
+describe("getUserByEmail", function () {
+  it("should return a user with valid email", function () {
+    const user = getUserByEmail(testUsers, "user2@example.com");
+    const expectedOutput = "user2RandomID";
+    // Write your assert statement here
+
+    assert.equal(user["user2@example.com"].id, expectedOutput);
   });
 });
