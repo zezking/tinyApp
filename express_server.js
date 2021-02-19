@@ -96,28 +96,31 @@ app.get("/login", (req, res) => {
 app.get("/urls/:shortURL", (req, res) => {
   if (!urlDatabase[req.params.shortURL]) {
     res.status(404).render("partials/_url_no");
-  } else {
-    const templateVars = {
-      shortURL: req.params.shortURL,
-      longURL: urlDatabase[req.params.shortURL].longURL,
-      user: users[req.session.userID],
-    };
-
-    if (users[req.session.userID] === undefined) {
-      res.status(401).render("partials/_url_permission");
-    } else if (req.session.userID !== urlDatabase[req.params.shortURL].userID) {
-      //if the current user ID does not match the ID with the given short URL in urlData base, send error
-      res.status(401).render("partials/_url_permission");
-    } else {
-      res.render("urls_show", templateVars);
-    }
+    return;
   }
+
+  const templateVars = {
+    shortURL: req.params.shortURL,
+    longURL: urlDatabase[req.params.shortURL].longURL,
+    user: users[req.session.userID],
+  };
+
+  if (users[req.session.userID] === undefined) {
+    res.status(401).render("partials/_url_permission");
+    return;
+  }
+  if (req.session.userID !== urlDatabase[req.params.shortURL].userID) {
+    //if the current user ID does not match the ID with the given short URL in urlData base, send error
+    res.status(401).render("partials/_url_permission");
+    return;
+  }
+  res.render("urls_show", templateVars);
 });
 
 //use /u/shortURL to redirect to the actual website
 app.get("/u/:shortURL", (req, res) => {
   if (!urlDatabase[req.params.shortURL]) {
-    res.send("URL does not exist");
+    res.status(404).render("partials/_url_no");
   }
   const longURL = urlDatabase[req.params.shortURL].longURL;
   res.redirect(longURL);
@@ -157,23 +160,26 @@ app.post("/login", (req, res) => {
   let userIDbyEmail = getUserByEmail(users, req.body.email);
 
   if (req.body.email === "" || req.body.password === "") {
-    res.status(404).send("<h1>Please Enter Email or Password</h1>");
-  } else if (userIDbyEmail === undefined) {
-    res.status(401).send("<h1>No user with that username found</h1>");
-  } else {
-    bcrypt.compare(
-      req.body.password,
-      users[userIDbyEmail].password,
-      (err, result) => {
-        if (result) {
-          req.session.userID = userIDbyEmail;
-          res.redirect("/urls");
-        } else {
-          res.status(401).send("<h1>Wrong Password</h1>");
-        }
-      }
-    );
+    res.status(404).render("partials/_url_noEntry");
+    return;
   }
+  if (userIDbyEmail === undefined) {
+    res.status(401).render("partials/_url_wrong");
+    return;
+  }
+
+  bcrypt.compare(
+    req.body.password,
+    users[userIDbyEmail].password,
+    (err, result) => {
+      if (result) {
+        req.session.userID = userIDbyEmail;
+        res.redirect("/urls");
+        return;
+      }
+      res.status(401).render("partials/_url_wrong");
+    }
+  );
 });
 
 //take user to urls once click logout
@@ -186,21 +192,25 @@ app.post("/logout", (req, res) => {
 app.post("/register", (req, res) => {
   const randomUserID = generateRandomString();
   if (req.body.email === "" || req.body.password === "") {
-    res.status(404).send("<h1>Please Enter Email or Password</h1>");
-  } else if (checkEmail(users, req.body.email)) {
-    res.status(400).send("<h1>Account Exist</h1>");
-  } else {
-    bcrypt.hash(req.body.password, saltRounds).then((hash) => {
-      users[randomUserID] = {
-        id: randomUserID,
-        email: req.body.email,
-        password: hash,
-      };
-
-      req.session.userID = randomUserID;
-      res.redirect("/urls");
-    });
+    res.status(404).render("partials/_url_noEntryReg");
+    return;
   }
+
+  if (checkEmail(users, req.body.email)) {
+    res.status(400).render("partials/_url_duplicate");
+    return;
+  }
+
+  bcrypt.hash(req.body.password, saltRounds).then((hash) => {
+    users[randomUserID] = {
+      id: randomUserID,
+      email: req.body.email,
+      password: hash,
+    };
+
+    req.session.userID = randomUserID;
+    res.redirect("/urls");
+  });
 });
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
