@@ -8,10 +8,10 @@ const checkEmail = (obj, str) => {
   return false;
 };
 
-const checkCredential = (obj) => {
+const getUserByEmail = (obj, email) => {
   let tempObj = {};
   for (let i in obj) {
-    if (!tempObj[obj[i].email]) {
+    if (!tempObj[obj[i].email] && obj[i].email === email) {
       tempObj[obj[i].email] = {
         id: i,
         email: obj[i].email,
@@ -45,4 +45,6 @@ let users = {
   },
 };
 
-module.exports = { checkEmail, checkCredential, urlsForUser };
+console.log(getUserByEmail(users, "zhaoen123123ze001@gmail.com"));
+
+module.exports = { checkEmail, getUserByEmail, urlsForUser };

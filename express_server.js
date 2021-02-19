@@ -4,8 +4,9 @@ const PORT = 8080; // default port 8080
 const bodyParser = require("body-parser");
 const { request, response } = require("express");
 const generateRandomString = require("./generateRandomString");
-const cookieParser = require("cookie-parser");
-const { checkEmail, checkCredential, urlsForUser } = require("./helperFunc");
+// const cookieParser = require("cookie-parser");
+const cookieSession = require("cookie-session");
+const { checkEmail, getUserByEmail, urlsForUser } = require("./helperFunc");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 let urlDatabase = {
@@ -29,16 +30,22 @@ let users = {
 };
 
 app.set("view engine", "ejs");
-app.use(cookieParser());
+// app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
-
+app.use(
+  cookieSession({
+    name: "session",
+    keys: ["key1", "key2"],
+  })
+);
+//render a welcome page if there is no cookie detected
 app.get("/welcome", (req, res) => {
   const templateVars = {
     urls: urlDatabase,
-    user: users[req.cookies.userID],
+    user: users[req.session.userID],
   };
-  if (users[req.cookies.userID] === undefined) {
+  if (users[req.session.userID] === undefined) {
     res.render("urls_welcome", templateVars);
   } else {
     res.redirect("/urls");
@@ -46,23 +53,23 @@ app.get("/welcome", (req, res) => {
 });
 
 //render the index page with list of urls and short ulrs
-
 app.get("/urls", (req, res) => {
-  if (users[req.cookies.userID] === undefined) {
+  if (users[req.session.userID] === undefined) {
     res.redirect("/welcome");
   } else {
     let templateVars = {
-      urls: urlsForUser(urlDatabase, req.cookies.userID),
-      user: users[req.cookies.userID],
+      urls: urlsForUser(urlDatabase, req.session.userID),
+      user: users[req.session.userID],
     };
 
     res.render("urls_index", templateVars);
   }
 });
+
 //render the get new link page with the input box and submit button
 app.get("/urls/new", (req, res) => {
-  const templateVars = { user: users[req.cookies.userID] };
-  if (users[req.cookies.userID] === undefined) {
+  const templateVars = { user: users[req.session.userID] };
+  if (users[req.session.userID] === undefined) {
     res.redirect("/login");
   } else {
     res.render("urls_new", templateVars);
@@ -72,14 +79,14 @@ app.get("/urls/new", (req, res) => {
 app.get("/register", (req, res) => {
   const templateVars = {
     urls: urlDatabase,
-    user: users[req.cookies.userID],
+    user: users[req.session.userID],
   };
 
   res.render("urls_register", templateVars);
 });
 app.get("/login", (req, res) => {
   const templateVars = {
-    user: users[req.cookies.userID],
+    user: users[req.session.userID],
   };
   res.render("urls_login", templateVars);
 });
@@ -89,7 +96,7 @@ app.get("/urls/:shortURL", (req, res) => {
   const templateVars = {
     shortURL: req.params.shortURL,
     longURL: urlDatabase[req.params.shortURL].longURL,
-    user: users[req.cookies.userID],
+    user: users[req.session.userID],
   };
   res.render("urls_show", templateVars);
 });
@@ -106,7 +113,7 @@ app.post("/urls", (req, res) => {
   const shortURL = generateRandomString();
   urlDatabase[shortURL] = {
     longURL: req.body.longURL,
-    userID: req.cookies.userID,
+    userID: req.session.userID,
   };
   res.redirect(`/urls/` + shortURL);
 });
@@ -132,29 +139,31 @@ app.post("/urls/:shortURL/", (req, res) => {
 
 //sdfsdfsdfsd
 app.post("/login", (req, res) => {
-  let newUsers = checkCredential(users);
-
-  if (!newUsers[req.body.email]) {
-    res.status(401).send("No user with that username found");
-  }
-
-  bcrypt.compare(
-    req.body.password,
-    newUsers[req.body.email].password,
-    (err, result) => {
-      if (result) {
-        res.cookie("userID", newUsers[req.body.email].id);
-        res.redirect("/urls");
-      } else {
-        res.status(401).send("Password incorrect");
+  let userByEmail = getUserByEmail(users, req.body.email);
+  console.log(userByEmail);
+  if (req.body.email === "" || req.body.password === "") {
+    res.status(404).send("<h1>Please Enter Email or Password</h1>");
+  } else if (Object.keys(userByEmail).length === 0) {
+    res.status(401).send("<h1>No user with that username found</h1>");
+  } else {
+    bcrypt.compare(
+      req.body.password,
+      userByEmail[req.body.email].password,
+      (err, result) => {
+        if (result) {
+          req.session.userID = userByEmail[req.body.email].id;
+          res.redirect("/urls");
+        } else {
+          res.status(401).send("<h1>No user with that username found</h1>");
+        }
       }
-    }
-  );
+    );
+  }
 });
 
 //take user to urls once click logout
 app.post("/logout", (req, res) => {
-  res.clearCookie("userID");
+  req.session = null;
 
   res.redirect("/urls");
 });
@@ -162,7 +171,7 @@ app.post("/logout", (req, res) => {
 app.post("/register", (req, res) => {
   const randomUserID = generateRandomString();
   if (req.body.email === "" || req.body.password === "") {
-    res.status(404).send("<h1>Page Not Found</h1>");
+    res.status(404).send("<h1>Please Enter Email or Password</h1>");
   } else if (checkEmail(users, req.body.email)) {
     res.status(400).send("<h1>Account Exist</h1>");
   } else {
@@ -173,7 +182,7 @@ app.post("/register", (req, res) => {
         password: hash,
       };
       console.log(hash);
-      res.cookie("userID", randomUserID);
+      req.session.userID = randomUserID;
       res.redirect("/urls");
     });
   }
