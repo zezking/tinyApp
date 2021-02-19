@@ -29,6 +29,11 @@ let users = {
   },
 };
 
+let error = {
+  error1: "You need to log in",
+  error2: "URL does not exist",
+};
+
 app.set("view engine", "ejs");
 // app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -50,6 +55,14 @@ app.get("/welcome", (req, res) => {
   } else {
     res.redirect("/urls");
   }
+});
+app.get("/error", (req, res) => {
+  const templateVars = {
+    urls: urlDatabase,
+    user: users[req.session.userID],
+  };
+
+  res.render("urls_error", templateVars);
 });
 
 //render the index page with list of urls and short ulrs
@@ -93,20 +106,29 @@ app.get("/login", (req, res) => {
 
 //showing short url and long url
 app.get("/urls/:shortURL", (req, res) => {
+  if (!urlDatabase[req.params.shortURL]) {
+    res.send("URL does not exist");
+  }
+  const templateVars = {
+    shortURL: req.params.shortURL,
+    longURL: urlDatabase[req.params.shortURL].longURL,
+    user: users[req.session.userID],
+  };
   if (users[req.session.userID] === undefined) {
     res.send("You need to log in");
+  } else if (req.session.userID !== urlDatabase[req.params.shortURL].userID) {
+    //if the current user ID does not match the ID with the given short URL in urlData base, send error
+    res.send("You do not own this URL");
   } else {
-    const templateVars = {
-      shortURL: req.params.shortURL,
-      longURL: urlDatabase[req.params.shortURL].longURL,
-      user: users[req.session.userID],
-    };
     res.render("urls_show", templateVars);
   }
 });
 
 //use /u/shortURL to redirect to the actual website
 app.get("/u/:shortURL", (req, res) => {
+  if (!urlDatabase[req.params.shortURL]) {
+    res.send("URL does not exist");
+  }
   const longURL = urlDatabase[req.params.shortURL].longURL;
   res.redirect(longURL);
 });
@@ -157,7 +179,7 @@ app.post("/login", (req, res) => {
           req.session.userID = userIDbyEmail;
           res.redirect("/urls");
         } else {
-          res.status(401).send("<h1>No user with that username found</h1>");
+          res.status(401).send("<h1>Wrong Password</h1>");
         }
       }
     );

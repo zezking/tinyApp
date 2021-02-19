@@ -14,19 +14,19 @@ User login
 
 User Registration
 
-![User Registration](./screenshots/6.png)
+![User Registration](./screenshots/3.png)
 
 Users have their own URLs
 
-![private URLs](./screenshots/3.png)
+![private URLs](./screenshots/4.png)
 
 Create new shortened URL
 
-![Generate new short URL](./screenshots/4.png)
+![Generate new short URL](./screenshots/5.png)
 
 Edit existing URL
 
-![URL edit](./screenshots/5.png)
+![URL edit](./screenshots/6.png)
 
 ## Dependencies
 
