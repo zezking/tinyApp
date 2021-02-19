@@ -4,7 +4,6 @@ const PORT = 8080; // default port 8080
 const bodyParser = require("body-parser");
 const { request, response } = require("express");
 const generateRandomString = require("./generateRandomString");
-// const cookieParser = require("cookie-parser");
 const cookieSession = require("cookie-session");
 const { checkEmail, getUserByEmail, urlsForUser } = require("./helperFunc");
 const bcrypt = require("bcrypt");
@@ -15,7 +14,7 @@ let urlDatabase = {
   Z3gm4q: { longURL: "https://www.facebook.ca", userID: "7EXK5b" },
   NJku5A: { longURL: "https://www.hansori.ca", userID: "7EXK5b" },
 };
-
+//Test Password sdfsdfsdfsd
 let users = {
   mg4vnm: {
     id: "mg4vnm",
