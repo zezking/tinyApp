@@ -54,15 +54,14 @@ app.get("/welcome", (req, res) => {
 
 //render the index page with list of urls and short ulrs
 app.get("/urls", (req, res) => {
+  let templateVars = {
+    urls: urlsForUser(urlDatabase, req.session.userID),
+    user: users[req.session.userID],
+  };
+
   if (users[req.session.userID] === undefined) {
     res.redirect("/welcome");
   } else {
-    let templateVars = {
-      urls: urlsForUser(urlDatabase, req.session.userID),
-      user: users[req.session.userID],
-    };
-    console.log(urlsForUser(urlDatabase, req.session.userID));
-
     res.render("urls_index", templateVars);
   }
 });
@@ -94,18 +93,21 @@ app.get("/login", (req, res) => {
 
 //showing short url and long url
 app.get("/urls/:shortURL", (req, res) => {
-  const templateVars = {
-    shortURL: req.params.shortURL,
-    longURL: urlDatabase[req.params.shortURL].longURL,
-    user: users[req.session.userID],
-  };
-  res.render("urls_show", templateVars);
+  if (users[req.session.userID] === undefined) {
+    res.send("You need to log in");
+  } else {
+    const templateVars = {
+      shortURL: req.params.shortURL,
+      longURL: urlDatabase[req.params.shortURL].longURL,
+      user: users[req.session.userID],
+    };
+    res.render("urls_show", templateVars);
+  }
 });
 
 //use /u/shortURL to redirect to the actual website
 app.get("/u/:shortURL", (req, res) => {
   const longURL = urlDatabase[req.params.shortURL].longURL;
-  console.log(longURL);
   res.redirect(longURL);
 });
 
@@ -141,9 +143,9 @@ app.post("/urls/:shortURL/", (req, res) => {
 //sdfsdfsdfsd
 app.post("/login", (req, res) => {
   let userIDbyEmail = getUserByEmail(users, req.body.email);
-  console.log(userIDbyEmail);
+
   if (req.body.email === "" || req.body.password === "") {
-    res.status(404).send("<h1>Please Enter Email or Password</h1>");
+    res.status(404).send("<>Please Enter Email or Password</>");
   } else if (userIDbyEmail === undefined) {
     res.status(401).send("<h1>No user with that username found</h1>");
   } else {
@@ -182,7 +184,7 @@ app.post("/register", (req, res) => {
         email: req.body.email,
         password: hash,
       };
-      console.log(hash);
+
       req.session.userID = randomUserID;
       res.redirect("/urls");
     });
