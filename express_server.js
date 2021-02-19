@@ -29,13 +29,8 @@ let users = {
   },
 };
 
-let error = {
-  error1: "You need to log in",
-  error2: "URL does not exist",
-};
-
 app.set("view engine", "ejs");
-// app.use(cookieParser());
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 app.use(
@@ -44,6 +39,7 @@ app.use(
     keys: ["key1", "key2"],
   })
 );
+
 //render a welcome page if there is no cookie detected
 app.get("/welcome", (req, res) => {
   const templateVars = {
@@ -55,14 +51,6 @@ app.get("/welcome", (req, res) => {
   } else {
     res.redirect("/urls");
   }
-});
-app.get("/error", (req, res) => {
-  const templateVars = {
-    urls: urlDatabase,
-    user: users[req.session.userID],
-  };
-
-  res.render("urls_error", templateVars);
 });
 
 //render the index page with list of urls and short ulrs
@@ -107,20 +95,22 @@ app.get("/login", (req, res) => {
 //showing short url and long url
 app.get("/urls/:shortURL", (req, res) => {
   if (!urlDatabase[req.params.shortURL]) {
-    res.send("URL does not exist");
-  }
-  const templateVars = {
-    shortURL: req.params.shortURL,
-    longURL: urlDatabase[req.params.shortURL].longURL,
-    user: users[req.session.userID],
-  };
-  if (users[req.session.userID] === undefined) {
-    res.send("You need to log in");
-  } else if (req.session.userID !== urlDatabase[req.params.shortURL].userID) {
-    //if the current user ID does not match the ID with the given short URL in urlData base, send error
-    res.send("You do not own this URL");
+    res.status(404).render("partials/_url_no");
   } else {
-    res.render("urls_show", templateVars);
+    const templateVars = {
+      shortURL: req.params.shortURL,
+      longURL: urlDatabase[req.params.shortURL].longURL,
+      user: users[req.session.userID],
+    };
+
+    if (users[req.session.userID] === undefined) {
+      res.status(401).render("partials/_url_permission");
+    } else if (req.session.userID !== urlDatabase[req.params.shortURL].userID) {
+      //if the current user ID does not match the ID with the given short URL in urlData base, send error
+      res.status(401).render("partials/_url_permission");
+    } else {
+      res.render("urls_show", templateVars);
+    }
   }
 });
 
@@ -167,7 +157,7 @@ app.post("/login", (req, res) => {
   let userIDbyEmail = getUserByEmail(users, req.body.email);
 
   if (req.body.email === "" || req.body.password === "") {
-    res.status(404).send("<>Please Enter Email or Password</>");
+    res.status(404).send("<h1>Please Enter Email or Password</h1>");
   } else if (userIDbyEmail === undefined) {
     res.status(401).send("<h1>No user with that username found</h1>");
   } else {
