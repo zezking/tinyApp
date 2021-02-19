@@ -1,6 +1,5 @@
 body {
   background-color: black;
-  font-weight: 900;
   background-image: url("/img/background.jpeg");
   background-repeat: no-repeat;
   background-size: cover;
@@ -53,7 +52,7 @@ main {
 
 span {
   font-size: 25px;
-  font-family: "Open Sans", sans-serif;
+  font-family: "Playfair Display", serif;
 }
 
 .quote p {
