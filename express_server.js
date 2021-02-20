@@ -1,32 +1,22 @@
 const express = require("express");
-const app = express();
-const PORT = 8080; // default port 8080
 const bodyParser = require("body-parser");
 const { request, response } = require("express");
-const generateRandomString = require("./generateRandomString");
 const cookieSession = require("cookie-session");
-const { checkEmail, getUserByEmail, urlsForUser } = require("./helperFunc");
+const generateRandomString = require("./generateRandomString");
 const bcrypt = require("bcrypt");
-const saltRounds = 10;
-let urlDatabase = {
-  b6UTxQ: { longURL: "https://www.tsn.ca", userID: "mg4vnm" },
-  i3BoGr: { longURL: "https://www.google.ca", userID: "mg4vnm" },
-  Z3gm4q: { longURL: "https://www.facebook.ca", userID: "7EXK5b" },
-  NJku5A: { longURL: "https://www.hansori.ca", userID: "7EXK5b" },
-};
+const {
+  checkEmail,
+  getUserByEmail,
+  urlsForUser,
+  urlDatabase,
+  users,
+} = require("./helperFunc");
+
+const app = express();
+const PORT = 8080; // default port 8080
+const saltRounds = 10; //declar salt number for hashing
+
 //Test Password sdfsdfsdfsd
-let users = {
-  mg4vnm: {
-    id: "mg4vnm",
-    email: "zhaoenze001@gmail.com",
-    password: "$2b$10$k/ZVjYEjiRXutvVbORJLUuhN0VdzgGOHv9FikpCePzbjNWOyDInU2",
-  },
-  "7EXK5b": {
-    id: "7EXK5b",
-    email: "wuhaoppp@163.com",
-    password: "$2b$10$RnLjlZn/ZPYT2UJ7fEG16O1kj1xOU9Hg.bsSbH0EizuXnhZ2mNI16",
-  },
-};
 
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
