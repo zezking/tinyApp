@@ -6,7 +6,6 @@ const { request, response } = require("express");
 const generateRandomString = require("./generateRandomString");
 const cookieSession = require("cookie-session");
 const { checkEmail, getUserByEmail, urlsForUser } = require("./helperFunc");
-const methodOverride = require("method-override");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 let urlDatabase = {
@@ -30,7 +29,6 @@ let users = {
 };
 
 app.set("view engine", "ejs");
-app.use(methodOverride("_method"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 app.use(
@@ -95,7 +93,7 @@ app.get("/login", (req, res) => {
 //showing short url and long url
 app.get("/urls/:shortURL", (req, res) => {
   if (!urlDatabase[req.params.shortURL]) {
-    res.status(404).render("partials/_url_no");
+    res.status(404).render("_no");
     return;
   }
 
@@ -106,12 +104,12 @@ app.get("/urls/:shortURL", (req, res) => {
   };
 
   if (users[req.session.userID] === undefined) {
-    res.status(401).render("partials/_url_permission");
+    res.status(401).render("partials/_permission");
     return;
   }
   if (req.session.userID !== urlDatabase[req.params.shortURL].userID) {
     //if the current user ID does not match the ID with the given short URL in urlData base, send error
-    res.status(401).render("partials/_url_permission");
+    res.status(401).render("partials/_unauthorize");
     return;
   }
   res.render("urls_show", templateVars);
@@ -120,7 +118,7 @@ app.get("/urls/:shortURL", (req, res) => {
 //use /u/shortURL to redirect to the actual website
 app.get("/u/:shortURL", (req, res) => {
   if (!urlDatabase[req.params.shortURL]) {
-    res.status(404).render("partials/_url_no");
+    res.status(404).render("partials/_no");
   }
   const longURL = urlDatabase[req.params.shortURL].longURL;
   res.redirect(longURL);
@@ -137,7 +135,7 @@ app.post("/urls", (req, res) => {
 });
 
 //add delete buttons
-app.delete("/urls/:shortURL/delete", (req, res) => {
+app.post("/urls/:shortURL/delete", (req, res) => {
   delete urlDatabase[req.params.shortURL];
   res.redirect("/urls");
 });
@@ -155,16 +153,15 @@ app.post("/urls/:shortURL/", (req, res) => {
 
 //check if the login credential is correct, return error if not and redirect to url
 
-//sdfsdfsdfsd
 app.post("/login", (req, res) => {
   let userIDbyEmail = getUserByEmail(users, req.body.email);
 
-  if (req.body.email === "" || req.body.password === "") {
-    res.status(404).render("partials/_url_noEntry");
+  if (!req.body.email || !req.body.password) {
+    res.status(404).render("_noEntry");
     return;
   }
   if (userIDbyEmail === undefined) {
-    res.status(401).render("partials/_url_wrong");
+    res.status(401).render("_wrong");
     return;
   }
 
@@ -177,7 +174,7 @@ app.post("/login", (req, res) => {
         res.redirect("/urls");
         return;
       }
-      res.status(401).render("partials/_url_wrong");
+      res.status(401).render("_wrong");
     }
   );
 });
@@ -192,12 +189,12 @@ app.post("/logout", (req, res) => {
 app.post("/register", (req, res) => {
   const randomUserID = generateRandomString();
   if (req.body.email === "" || req.body.password === "") {
-    res.status(404).render("partials/_url_noEntryReg");
+    res.status(404).render("_noEntryReg");
     return;
   }
 
   if (checkEmail(users, req.body.email)) {
-    res.status(400).render("partials/_url_duplicate");
+    res.status(400).render("_duplicate");
     return;
   }
 
