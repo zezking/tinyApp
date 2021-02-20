@@ -20,32 +20,38 @@ let users = {
   },
 };
 
-const checkEmail = (urlDatabase, email) => {
-  for (const userID in urlDatabase) {
-    if (obj[userID].email === email) {
+const checkEmail = (users, email) => {
+  for (const userID in users) {
+    if (users[userID].email === email) {
       return true;
     }
   }
   return false;
 };
 //return the id of User when user enter their email
-const getUserByEmail = (obj, email) => {
-  for (const i in obj) {
-    if (obj[i].email === email) {
-      return i;
+const getUserByEmail = (users, email) => {
+  for (const userID in users) {
+    if (users[userID].email === email) {
+      return userID;
     }
   }
   return undefined;
 };
 //return user's url when login with user's ID
-const urlsForUser = (obj, userID) => {
-  let newObj = {};
-  for (const i in obj) {
-    if (obj[i].userID === userID) {
-      newObj[i] = obj[i];
+const urlsForUser = (urls, userID) => {
+  let userPrivateURLS = {};
+  for (const user in urls) {
+    if (urls[user].userID === userID) {
+      userPrivateURLS[user] = urls[user];
     }
   }
-  return newObj;
+  return userPrivateURLS;
 };
 
-module.exports = { checkEmail, getUserByEmail, urlsForUser };
+module.exports = {
+  checkEmail,
+  getUserByEmail,
+  urlsForUser,
+  urlDatabase,
+  users,
+};
