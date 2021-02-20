@@ -157,11 +157,11 @@ app.post("/login", (req, res) => {
   let userIDbyEmail = getUserByEmail(users, req.body.email);
 
   if (!req.body.email || !req.body.password) {
-    res.status(404).render("_noEntry");
+    res.status(404).render("partials/_noEntry");
     return;
   }
   if (userIDbyEmail === undefined) {
-    res.status(401).render("_wrong");
+    res.status(401).render("partials/_wrong");
     return;
   }
 
@@ -174,7 +174,7 @@ app.post("/login", (req, res) => {
         res.redirect("/urls");
         return;
       }
-      res.status(401).render("_wrong");
+      res.status(401).render("partials/_wrong");
     }
   );
 });
@@ -189,12 +189,12 @@ app.post("/logout", (req, res) => {
 app.post("/register", (req, res) => {
   const randomUserID = generateRandomString();
   if (req.body.email === "" || req.body.password === "") {
-    res.status(404).render("_noEntryReg");
+    res.status(404).render("partials/_noEntryReg");
     return;
   }
 
   if (checkEmail(users, req.body.email)) {
-    res.status(400).render("_duplicate");
+    res.status(400).render("partials/_duplicate");
     return;
   }
 
