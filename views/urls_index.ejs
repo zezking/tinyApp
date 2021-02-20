@@ -15,7 +15,7 @@
       crossorigin="anonymous"
     />
     <link rel="preconnect" href="https://fonts.gstatic.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@900&display=swap" rel="stylesheet">
     <title>TinyApp</title>
     <link rel="stylesheet" type="text/css" href="/css/style.css">
   </head>
@@ -48,7 +48,7 @@
                 </form>
               </td>
               <td>
-                <form method="POST" action="/urls/<%= url %>/delete"">
+                <form method="POST" action="/urls/<%= url %>?_method=DELETE">
                   <button type="delete" class="btn btn-outline-danger btn-sm">
                     Delete
             </tr> 

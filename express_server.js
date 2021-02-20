@@ -6,6 +6,7 @@ const { request, response } = require("express");
 const generateRandomString = require("./generateRandomString");
 const cookieSession = require("cookie-session");
 const { checkEmail, getUserByEmail, urlsForUser } = require("./helperFunc");
+const methodOverride = require("method-override");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 let urlDatabase = {
@@ -29,7 +30,7 @@ let users = {
 };
 
 app.set("view engine", "ejs");
-
+app.use(methodOverride("_method"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 app.use(
@@ -136,7 +137,7 @@ app.post("/urls", (req, res) => {
 });
 
 //add delete buttons
-app.post("/urls/:shortURL/delete", (req, res) => {
+app.delete("/urls/:shortURL/delete", (req, res) => {
   delete urlDatabase[req.params.shortURL];
   res.redirect("/urls");
 });

@@ -39,5 +39,14 @@ Edit existing URL
 
 ## Getting Started
 
-- Install all dependencies (using the `npm install` command).
-- Run the development web server using the `node express_server.js` command.
+- Install all dependencies
+
+```javascript
+npm install
+```
+
+- Run the development web server using the
+
+```javascript
+node express_server.js
+```
