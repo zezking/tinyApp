@@ -80,7 +80,7 @@ app.get("/login", (req, res) => {
 //showing short url and long url
 app.get("/urls/:shortURL", (req, res) => {
   if (!urlDatabase[req.params.shortURL]) {
-    res.status(404).render("_no");
+    res.status(404).render("partials/_no");
     return;
   }
 
@@ -172,7 +172,7 @@ app.post("/logout", (req, res) => {
 
   res.redirect("/urls");
 });
-
+//user registrations pages
 app.post("/register", (req, res) => {
   const randomUserID = generateRandomString();
   if (!req.body.email || !req.body.password) {
