@@ -151,7 +151,7 @@ app.post("/login", (req, res) => {
     res.status(401).render("partials/_wrong");
     return;
   }
-
+  //use bcrypt to check if password is correct
   bcrypt.compare(
     req.body.password,
     users[userIDbyEmail].password,
