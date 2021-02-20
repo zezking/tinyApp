@@ -44,7 +44,7 @@ app.get("/welcome", (req, res) => {
     urls: urlDatabase,
     user: users[req.session.userID],
   };
-  if (users[req.session.userID] === undefined) {
+  if (!users[req.session.userID]) {
     res.render("urls_welcome", templateVars);
   } else {
     res.redirect("/urls");
@@ -58,7 +58,7 @@ app.get("/urls", (req, res) => {
     user: users[req.session.userID],
   };
 
-  if (users[req.session.userID] === undefined) {
+  if (!users[req.session.userID]) {
     res.redirect("/welcome");
   } else {
     res.render("urls_index", templateVars);
@@ -68,7 +68,7 @@ app.get("/urls", (req, res) => {
 //render the get new link page with the input box and submit button
 app.get("/urls/new", (req, res) => {
   const templateVars = { user: users[req.session.userID] };
-  if (users[req.session.userID] === undefined) {
+  if (!users[req.session.userID]) {
     res.redirect("/login");
   } else {
     res.render("urls_new", templateVars);
@@ -103,7 +103,7 @@ app.get("/urls/:shortURL", (req, res) => {
     user: users[req.session.userID],
   };
 
-  if (users[req.session.userID] === undefined) {
+  if (!users[req.session.userID]) {
     res.status(401).render("partials/_permission");
     return;
   }
@@ -160,7 +160,7 @@ app.post("/login", (req, res) => {
     res.status(404).render("partials/_noEntry");
     return;
   }
-  if (userIDbyEmail === undefined) {
+  if (!userIDbyEmail) {
     res.status(401).render("partials/_wrong");
     return;
   }
@@ -188,7 +188,7 @@ app.post("/logout", (req, res) => {
 
 app.post("/register", (req, res) => {
   const randomUserID = generateRandomString();
-  if (req.body.email === "" || req.body.password === "") {
+  if (!req.body.email || !req.body.password) {
     res.status(404).render("partials/_noEntryReg");
     return;
   }

@@ -1,4 +1,4 @@
-const bcrypt = require("bcrypt");
+//check if the user has entre the correct email
 const checkEmail = (obj, str) => {
   for (i in obj) {
     if (obj[i].email === str) {
@@ -7,7 +7,7 @@ const checkEmail = (obj, str) => {
   }
   return false;
 };
-
+//return the id of User when user enter their email
 const getUserByEmail = (obj, email) => {
   for (let i in obj) {
     if (obj[i].email === email) {
@@ -16,7 +16,7 @@ const getUserByEmail = (obj, email) => {
   }
   return undefined;
 };
-
+//return user's url when login with user's ID
 const urlsForUser = (obj, userID) => {
   let newObj = {};
   for (i in obj) {
