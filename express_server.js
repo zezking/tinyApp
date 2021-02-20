@@ -154,7 +154,7 @@ app.post("/urls/:shortURL/", (req, res) => {
 //check if the login credential is correct, return error if not and redirect to url
 
 app.post("/login", (req, res) => {
-  let userIDbyEmail = getUserByEmail(users, req.body.email);
+  const userIDbyEmail = getUserByEmail(users, req.body.email);
 
   if (!req.body.email || !req.body.password) {
     res.status(404).render("partials/_noEntry");
