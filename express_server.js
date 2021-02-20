@@ -1,6 +1,5 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const { request, response } = require("express");
 const cookieSession = require("cookie-session");
 const generateRandomString = require("./generateRandomString");
 const bcrypt = require("bcrypt");
@@ -15,8 +14,6 @@ const {
 const app = express();
 const PORT = 8080; // default port 8080
 const saltRounds = 10; //declar salt number for hashing
-
-//Test Password sdfsdfsdfsd
 
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
