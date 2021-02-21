@@ -113,10 +113,6 @@ app.get("/u/:shortURL", (req, res) => {
   res.redirect(longURL);
 });
 
-app.get("/urls/:shortURL/delete", (req, res) => {
-  delete urlDatabase[req.params.shortURL];
-  res.redirect("/urls");
-});
 //input a regular url and generate a short url and push in the urlDatabase object
 app.post("/urls", (req, res) => {
   const shortURL = generateRandomString();
@@ -129,6 +125,10 @@ app.post("/urls", (req, res) => {
 
 //add delete buttons
 app.post("/urls/:shortURL/delete", (req, res) => {
+  if (!users[req.session.userID]) {
+    res.status(401).render("partials/_permission");
+    return;
+  }
   delete urlDatabase[req.params.shortURL];
   res.redirect("/urls");
 });
