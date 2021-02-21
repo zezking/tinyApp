@@ -54,5 +54,5 @@ node express_server.js
 - visit the following link
 
 ```
-localhost:8080/urls;
+localhost:8080
 ```
