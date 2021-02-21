@@ -22,7 +22,7 @@ Users have their own URLs
 
 Create new shortened URL
 
-![Generate new short URL](./screenshots/_urls_new.png)
+![Generate new short URL](./screenshots/_urls_new_.png)
 
 Edit existing URL
 
