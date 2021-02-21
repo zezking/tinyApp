@@ -107,11 +107,16 @@ app.get("/urls/:shortURL", (req, res) => {
 app.get("/u/:shortURL", (req, res) => {
   if (!urlDatabase[req.params.shortURL]) {
     res.status(404).render("partials/_no");
+    return;
   }
   const longURL = urlDatabase[req.params.shortURL].longURL;
   res.redirect(longURL);
 });
 
+app.get("/urls/:shortURL/delete", (req, res) => {
+  delete urlDatabase[req.params.shortURL];
+  res.redirect("/urls");
+});
 //input a regular url and generate a short url and push in the urlDatabase object
 app.post("/urls", (req, res) => {
   const shortURL = generateRandomString();
@@ -162,11 +167,11 @@ app.post("/login", (req, res) => {
   );
 });
 
-//take user to urls once click logout
+//take user to urls once click logout and delete cookie
 app.post("/logout", (req, res) => {
   req.session = null;
 
-  res.redirect("/urls");
+  res.redirect("/");
 });
 //user registrations pages
 app.post("/register", (req, res) => {
