@@ -6,27 +6,27 @@ This is a web application that will generate shorter URLs based on regular URls 
 
 Welcome Page
 
-![Welcome Page](./screenshots/1.png)
+![Welcome Page](./screenshots/_.png)
 
 User login
 
-![user Login](./screenshots/2.png)
+![user Login](./screenshots/login_.png)
 
 User Registration
 
-![User Registration](./screenshots/3.png)
+![User Registration](./screenshots/register_.png)
 
 Users have their own URLs
 
-![private URLs](./screenshots/4.png)
+![private URLs](./screenshots/_urls.png)
 
 Create new shortened URL
 
-![Generate new short URL](./screenshots/5.png)
+![Generate new short URL](./screenshots/_urls_new.png)
 
 Edit existing URL
 
-![URL edit](./screenshots/6.png)
+![URL edit](./screenshots/customizeURL_.png)
 
 ## Dependencies
 
