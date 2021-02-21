@@ -1,7 +1,6 @@
 const { assert } = require("chai");
 
 const { getUserByEmail } = require("../helperFunc.js");
-console.log(getUserByEmail);
 
 const testUsers = {
   userRandomID: {
@@ -22,7 +21,7 @@ describe("getUserByEmail", function () {
     const expectedOutput = "userRandomID";
     // Write your assert statement here
 
-    assert.equal(user["user@example.com"].id, expectedOutput);
+    assert.equal(user, expectedOutput);
   });
 });
 
@@ -32,7 +31,7 @@ describe("getUserByEmail", function () {
     const expectedOutput = "user2RandomID";
     // Write your assert statement here
 
-    assert.equal(user["user2@example.com"].id, expectedOutput);
+    assert.equal(user, expectedOutput);
   });
 });
 describe("getUserByEmail", function () {
