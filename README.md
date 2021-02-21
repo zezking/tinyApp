@@ -5,8 +5,9 @@ This is a web application that will generate shorter URLs based on regular URls 
 ## Screenshots and Features
 
 Welcome Page
+<img src=./screenshots/_.png width=500></img>
 
-![Welcome Page](./screenshots/_.png)
+<!-- ![Welcome Page](./screenshots/_.png) -->
 
 User login
 
