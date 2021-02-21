@@ -1,7 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cookieSession = require("cookie-session");
-const generateRandomString = require("./generateRandomString");
+
 const bcrypt = require("bcrypt");
 const {
   checkEmail,
@@ -9,6 +9,7 @@ const {
   urlsForUser,
   urlDatabase,
   users,
+  generateRandomString,
 } = require("./helperFunc");
 
 const app = express();

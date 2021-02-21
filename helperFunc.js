@@ -48,10 +48,22 @@ const urlsForUser = (urls, userID) => {
   return userPrivateURLS;
 };
 
+const generateRandomString = () => {
+  let result = "";
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+  for (var i = 0; i < 6; i++) {
+    result += characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+  return result;
+};
+
 module.exports = {
   checkEmail,
   getUserByEmail,
   urlsForUser,
   urlDatabase,
   users,
+  generateRandomString,
 };
