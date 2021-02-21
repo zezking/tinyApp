@@ -26,7 +26,7 @@ app.use(
 );
 
 //render a welcome page if there is no cookie detected
-app.get("/welcome", (req, res) => {
+app.get("/", (req, res) => {
   const templateVars = {
     urls: urlDatabase,
     user: users[req.session.userID],
@@ -46,7 +46,8 @@ app.get("/urls", (req, res) => {
   };
 
   if (!users[req.session.userID]) {
-    res.redirect("/welcome");
+    res.status(401).render("partials/_permission");
+    return;
   } else {
     res.render("urls_index", templateVars);
   }
@@ -125,11 +126,6 @@ app.post("/urls", (req, res) => {
 app.post("/urls/:shortURL/delete", (req, res) => {
   delete urlDatabase[req.params.shortURL];
   res.redirect("/urls");
-});
-
-//add url edit in urls_index.ejs
-app.post("/urls/:shortURL/edit", (req, res) => {
-  res.redirect("/urls/" + req.params.shortURL);
 });
 
 //add long url edit input text box and edit button to submit the link edited

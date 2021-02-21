@@ -3,6 +3,7 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
   background-attachment: fixed;
+  padding: 3rem;
 }
 main {
   width: 50em;
@@ -22,7 +23,7 @@ main {
   justify-content: space-around;
 }
 .welcome-content {
-  margin-left: 20em;
+  margin-left: 20rem;
 }
 .navbar-brand {
   font-family: "Playfair Display", serif;
@@ -39,7 +40,8 @@ main {
   width: 500px;
   display: flex;
   color: #f5f5f5;
-  margin: 10em;
+  margin: 7rem;
+  margin-left: 14rem;
 }
 
 .error {
