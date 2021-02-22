@@ -35,7 +35,7 @@ const getUserByEmail = (users, email) => {
       return userID;
     }
   }
-  return undefined;
+  return null;
 };
 //return user's url when login with user's ID
 const urlsForUser = (urls, userID) => {
@@ -53,7 +53,7 @@ const generateRandomString = () => {
   const characters =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
-  for (var i = 0; i < 6; i++) {
+  for (let i = 0; i < 6; i++) {
     result += characters.charAt(Math.floor(Math.random() * characters.length));
   }
   return result;
