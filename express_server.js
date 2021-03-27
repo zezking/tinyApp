@@ -13,7 +13,7 @@ const {
 } = require("./helperFunc");
 
 const app = express();
-const PORT = 8080; // default port 8080
+const PORT = process.env.PORT || 5000; // default port 8080
 const saltRounds = 10; //declar salt number for hashing
 
 app.set("view engine", "ejs");
