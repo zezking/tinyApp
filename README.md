@@ -1,7 +1,9 @@
 # Instroduction
 
 This is a web application that will generate shorter URLs based on regular URls for Lighthouse Lab bootcamp Week 3.
+
 [Click Here to see it live](https://tinyapp-ez.herokuapp.com/)
+
 Please allow 5-10 seconds cold start. Thank you!
 
 ## Screenshots and Features
