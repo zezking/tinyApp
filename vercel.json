@@ -1,5 +1,5 @@
 {
-  "outputDirectory": "./",
+  "version": 2,
   "builds": [
     {
       "src": "express_server.js",
