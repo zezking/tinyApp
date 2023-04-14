@@ -1,5 +1,4 @@
 {
-  "version": 2,
   "builds": [
     {
       "src": "express_server.js",
@@ -9,7 +8,7 @@
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "./"
+      "dest": "express_server.js"
     }
   ]
 }
