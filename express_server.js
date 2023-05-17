@@ -10,7 +10,7 @@ const {
   urlDatabase,
   users,
   generateRandomString,
-} = require("./helperFunc");
+} = require("./helpers");
 
 const app = express();
 const PORT = process.env.PORT || 5000; // default port 8080
@@ -18,7 +18,7 @@ const saltRounds = 10; //declar salt number for hashing
 
 app.set("views", path.join(__dirname, "./views/"));
 app.set("view engine", "ejs");
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 app.use(
   cookieSession({
@@ -57,7 +57,7 @@ app.get("/urls", (req, res) => {
 
 //render the get new link page with the input box and submit button
 app.get("/urls/new", (req, res) => {
-  const templateVars = { user: users[req.session.userID] };
+  const templateVars = {user: users[req.session.userID]};
   if (!users[req.session.userID]) {
     res.redirect("/login");
   } else {
